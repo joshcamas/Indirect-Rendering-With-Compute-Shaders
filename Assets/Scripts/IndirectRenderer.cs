@@ -128,15 +128,21 @@ public class IndirectRenderer : MonoBehaviour
     private const int ARGS_BYTE_SIZE_PER_INSTANCE_TYPE = NUMBER_OF_ARGS_PER_INSTANCE_TYPE * sizeof(uint); // 80
     private const int SCAN_THREAD_GROUP_SIZE = 64;
     
+    public Transform Transform
+    {
+        get
+        {
+            if (m_transform == null)
+                m_transform = transform;
+
+            return m_transform;
+        }
+    }
+
     #endregion
 
     #region MonoBehaviour
-
-    private void Awake()
-    {
-        m_transform = transform;
-    }
-
+    
     private void Update()
     {
         if (!isEnabled)
@@ -198,7 +204,7 @@ public class IndirectRenderer : MonoBehaviour
         }
         
         Matrix4x4 temp = Gizmos.matrix;
-        Gizmos.matrix = Matrix4x4.TRS(m_transform.position, m_transform.rotation, Vector3.one);
+        Gizmos.matrix = Matrix4x4.TRS(Transform.position, Transform.rotation, Vector3.one);
         if (mainCamera.orthographic)
         {
             float spread = mainCamera.farClipPlane - mainCamera.nearClipPlane;
